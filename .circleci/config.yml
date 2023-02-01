@@ -1,6 +1,8 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine.
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+orbs:
+  build-2secure: appdome/build-2secure@1.0.0
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -17,6 +19,7 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+          command: "echo $FUSTION_SET_ID_ANDROID"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -24,3 +27,11 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+  
+  #Appdome fusion:
+  #  jobs:
+  #    - build-2secure/appdome_runner:
+  #        appFile: <path_to_apk_or_aab_file>
+  #        google-play-signing: <true_or_false>
+  #        output: <output_apk_or_aab>
+  #        runner: ANDROID_AUTO_SIGNING
