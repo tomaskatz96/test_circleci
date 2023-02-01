@@ -17,9 +17,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Say hello"
+          name: "build"
           command: |
-            echo hello
+            pwd
+            ls
             echo $FUSTION_SET_ID_ANDROID
           
 
