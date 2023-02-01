@@ -1,22 +1,19 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 orbs:
-  build-2secure: appdome/build-2secure@1.0.0
+  appdome-orb: appdome/appdome-orb@dev:<<pipeline.git.revision>>
+  orb-tools: circleci/orb-tools@11.5
 
+filters: &filters
+  tags:
+    only: /.*/
 
-          
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-
-workflows:  
-  Appdome fusion:
+workflows:
+  test-deploy:
+        # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
     jobs:
-      - build-2secure/appdome_runner:
-          runner: ANDROID_PRIVATE_SIGNING
-          name: "test-android-auto-sign"
-          appFile: https://github.com/avi112211/test_circleci/blob/circleci-project-setup/app-release.apk
-          google-play-signing: false
-          output: app.apk
-          
+      - appdome-orb/appdome_runner:
+          name: "test-android-private-sign"
+          runner: "ANDROID_PRIVATE_SIGNING"
+          appFile: "https://github.com/idanhauser/TestAppdome_orb_private/raw/main/files/EmptyApp.apk"
+          output: "appname.apk"
+          filters: *filters
