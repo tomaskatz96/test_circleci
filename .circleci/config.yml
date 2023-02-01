@@ -19,6 +19,7 @@ jobs:
       - run:
           name: "Say hello"
           command: |
+            "echo $FUSTION_SET_ID_ANDROID"
             "echo Hello, World!"
             "echo $FUSTION_SET_ID_ANDROID"
 
