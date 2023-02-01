@@ -30,7 +30,7 @@ jobs:
       - run:
           name: "build"
           command: |
-            echo $app
+            echo $APP_ID
           
 
 # Invoke jobs via workflows
