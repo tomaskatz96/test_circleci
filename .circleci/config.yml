@@ -26,11 +26,11 @@ jobs:
             curl -s -X PUT "$(echo "$publicLink" | jq -r .url)" --header 'Content-Type: application/x-compressed-tar' -T "app-release.apk"
             app=$(curl -s --request POST --url "https://fusion.appdome.com/api/v1/upload-using-link" --header "Authorization: $APPDOME_API_KEY" --header 'content-type: multipart/form-data' --form file_name="app-release.apk" --form file_app_id="$(echo "$publicLink" | jq -r .file_id)")
             echo $app
-            echo "export APP_ID='aa'" >> $BASH_ENV
+            echo "export APP_ID='$app'" >> $BASH_ENV
       - run:
           name: "build"
           command: |
-            echo $APP_ID
+            echo ${APP_ID}
           
 
 # Invoke jobs via workflows
