@@ -21,7 +21,10 @@ jobs:
           command: |
             pwd
             ls
-            echo $FUSTION_SET_ID_ANDROID
+            publicLink=$(curl -s --request GET --url "https://fusion.appdome.com/api/v1/upload-link" --header "Authorization: $APPDOME_API_KEY")
+            curl -s -X PUT "$(echo "$publicLink" | jq -r .url)" --header 'Content-Type: application/x-compressed-tar' -T "app-release.apk"
+            app=$(curl -s --request POST --url "https://fusion.appdome.com/api/v1/upload-using-link" --header "Authorization: $APPDOME_API_KEY" --header 'content-type: multipart/form-data' --form file_name="app-release.apk" --form file_app_id="$(echo "$publicLink" | jq -r .file_id)"
+  )
           
 
 # Invoke jobs via workflows
