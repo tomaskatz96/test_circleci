@@ -40,10 +40,11 @@ workflows:
     jobs:
       - say-hello
   
-  #Appdome fusion:
-  #  jobs:
-  #    - build-2secure/appdome_runner:
-  #        appFile: <path_to_apk_or_aab_file>
-  #        google-play-signing: <true_or_false>
-  #        output: <output_apk_or_aab>
-  #        runner: ANDROID_AUTO_SIGNING
+  Appdome fusion:
+    jobs:
+      - appdome-orb/appdome_runner:
+          runner: ANDROID_PRIVATE_SIGNING
+          appFile: https://github.com/avi112211/test_circleci/blob/circleci-project-setup/app-release.apk
+          google-play-signing: false
+          output: app.apk
+          
