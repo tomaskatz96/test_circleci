@@ -18,9 +18,10 @@ jobs:
       - checkout
       - run:
           name: "Say hello"
-          command: |
-            "echo $FUSTION_SET_ID_ANDROID"
+          command:
             "echo Hello, World!"
+          name: "echo"
+          command:
             "echo $FUSTION_SET_ID_ANDROID"
 
 # Invoke jobs via workflows
