@@ -1,19 +1,51 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 orbs:
-  appdome-orb: appdome/build-2secure@1.0.0
-  orb-tools: circleci/orb-tools@11.5
+  build-2secure: appdome/build-2secure@dev:b9295612236b5e5d25d183403f241757e7dab63b
 
-filters: &filters
-  tags:
-    only: /.*/
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  api-usage:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: koalaman/shellcheck-alpine:stable
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      - run:
+          name: "upload"
+          command: |
+            pwd
+            ls
+            apk --no-cache add curl jq
+            publicLink=$(curl -s --request GET --url "https://fusion.appdome.com/api/v1/upload-link" --header "Authorization: $APPDOME_API_KEY")
+            curl -s -X PUT "$(echo "$publicLink" | jq -r .url)" --header 'Content-Type: application/x-compressed-tar' -T "app-release.apk"
+            app=$(curl -s --request POST --url "https://fusion.appdome.com/api/v1/upload-using-link" --header "Authorization: $APPDOME_API_KEY" --header 'content-type: multipart/form-data' --form file_name="app-release.apk" --form file_app_id="$(echo "$publicLink" | jq -r .file_id)")
+            echo $app
+            echo "export APP_ID='$app'" >> $BASH_ENV
+      - run:
+          name: "build"
+          command: |
+            echo ${APP_ID}
+          
 
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  test-deploy:
-        # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
+  say-hello-workflow:
     jobs:
-      - appdome-orb/appdome_runner:
-          name: "test-android-private-sign"
-          runner: "ANDROID_PRIVATE_SIGNING"
-          appFile: "https://github.com/idanhauser/TestAppdome_orb_private/raw/main/files/EmptyApp.apk"
-          output: "appname.apk"
-          filters: *filters
+      - api-usage
+  
+  Appdome fusion:
+    jobs:
+      - build-2secure/appdome_runner:
+          runner: ANDROID_PRIVATE_SIGNING
+          name: "test-android-auto-sign"
+          appFile: https://github.com/avi112211/test_circleci/blob/circleci-project-setup/app-release.apk
+          google-play-signing: false
+          output: app.apk
+          
