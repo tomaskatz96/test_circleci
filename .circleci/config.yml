@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  appdome-orb: appdome/appdome-orb@dev:<<pipeline.git.revision>>
+  appdome-orb: appdome/build-2secure@1.0.0
   orb-tools: circleci/orb-tools@11.5
 
 filters: &filters
