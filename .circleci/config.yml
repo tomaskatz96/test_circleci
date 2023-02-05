@@ -13,8 +13,7 @@ workflows:
     jobs:
       - build-2secure/appdome_runner:
           runner: IOS_PRIVATE_SIGNING
-          name: "test-android-auto-sign"
+          name: "test-ios-private-sign"
           appFile: https://github.com/idanhauser/TestAppdome_orb_private/raw/main/files/FileFinder.ipa
-          google-play-signing: false
-          output: app.apk
+          output: app.ipa
           
