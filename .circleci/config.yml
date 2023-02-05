@@ -12,9 +12,9 @@ workflows:
   Appdome fusion:
     jobs:
       - build-2secure/appdome_runner:
-          runner: ANDROID_AUTO_SIGNING
+          runner: IOS_PRIVATE_SIGNING
           name: "test-android-auto-sign"
-          appFile: https://github.com/avi112211/test_circleci/raw/circleci-project-setup/app-release.apk
+          appFile: https://github.com/idanhauser/TestAppdome_orb_private/raw/main/files/FileFinder.ipa
           google-play-signing: false
           output: app.apk
           
