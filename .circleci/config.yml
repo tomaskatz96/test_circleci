@@ -2,7 +2,7 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 orbs:
-  build-2secure: appdome/build-2secure@dev:7610a3a8a82aacc83bfe54a7c916b8f361a0725d
+  build-2secure: appdome/build-2secure@2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
